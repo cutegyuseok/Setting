@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<!--
+	Spectral by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Login</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+	</head>
+	<body class="is-preload">
+
+		<!-- Page Wrapper -->
+			<div id="page-wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<h1><a href="/">Spectral</a></h1>
+						<nav id="nav">
+							<ul>
+								<li class="special">
+									<a href="#menu" class="menuToggle"><span>Menu</span></a>
+									<div id="menu">
+										<ul>
+											<li><a href="index">Home</a></li>
+											<li><a href="generic">Generic</a></li>
+											<li><a href="elements">Elements</a></li>
+										</ul>
+									</div>
+								</li>
+							</ul>
+						</nav>
+					</header>
+
+				<!-- Main -->
+					<article id="main">
+						<header>
+							<h2>SNS LOGIN</h2>
+<!--							<a onclick="kakaoLogin();">-->
+<!--								<span>카카오 로그인</span>-->
+<!--							</a>-->
+							<a id ="kakao-login-btn"></a>
+						</header>
+						</section>
+					</article>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<ul class="icons">
+							<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+							<li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
+							<li><a href="#" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+						</ul>
+						<ul class="copyright">
+							<li>&copy; Untitled</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+						</ul>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script type="text/javascript">
+				Kakao.init('c5dfe5e5d68db56c3e245d74e92580f5'); //발급받은 키 중 javascript키를 사용해준다.
+				Kakao.Auth.createLoginButton({
+					container: '#kakao-login-btn',
+					success: function (response) {
+						Kakao.API.request({
+							url: '/v2/user/me',
+							success: function (response) {
+								login(response)
+							},
+							fail: function (error) {
+								alert("로그인 시도중 에러가 발생했습니다. 개발자에게 문의 주시기 바랍니다.")
+							},
+						})
+					},
+					fail: function (error) {
+						alert("로그인 시도중 에러가 발생했습니다. 개발자에게 문의 주시기 바랍니다.")
+					},
+				});
+
+				function login(authObj) {
+					$.ajax({
+						url: "/login",
+						dataType: "json",
+						contentType: "application/json",
+						data: JSON.stringify({authObj}),
+						type: "POST",
+						complete: function (data) {
+							if (data.responseText == 'error') {
+								alert("로그인에 실패했습니다.");
+							} else if (data.responseText == 'success') {
+								alert("첫 방문을 환영합니다.");
+								window.location.href ="index";
+							} else {
+								alert(data.responseText+"님. 다시 방문해 주셔서 감사합니다.");
+								window.location.href ="index";
+							}
+						}
+					});
+				}
+			</script>
+
+	</body>
+</html>
