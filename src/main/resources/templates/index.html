@@ -56,7 +56,11 @@
 								This blog contains my toy project.<br />
 								You can experience all the features with just one login.</p>
 							<ul class="actions special">
-								<li><a href="#" class="button primary">Login to start the experience.</a></li>
+								<th:block th:unless="${session.SESSION_NAME !=null}">
+								<li>
+									<a href="login" class="button primary">Login to start the experience.</a>
+								</li>
+								</th:block>
 							</ul>
 						</div>
 						<a href="#one" class="more scrolly">Learn More</a>
@@ -66,15 +70,19 @@
 					<section id="one" class="wrapper style1 special">
 						<div class="inner">
 							<header class="major">
-								<h2>Arcu aliquet vel lobortis ata nisl<br />
-								eget augue amet aliquet nisl cep donec</h2>
-								<p>Aliquam ut ex ut augue consectetur interdum. Donec amet imperdiet eleifend<br />
-								fringilla tincidunt. Nullam dui leo Aenean mi ligula, rhoncus ullamcorper.</p>
+								<h2>I have worked on various projects<br />
+									using a variety of technology stacks.</h2>
+								<p>My main language is Java, and the following technologies are<br />
+									ones that I have used or studied.</p>
 							</header>
 							<ul class="icons major">
-								<li><span class="icon fa-gem major style1"><span class="label">Lorem</span></span></li>
-								<li><span class="icon fa-heart major style2"><span class="label">Ipsum</span></span></li>
-								<li><span class="icon solid fa-code major style3"><span class="label">Dolor</span></span></li>
+								<li><span class="fab fa-java"><span class="label"> Java</span></span></li>
+								<li><span class="fas fa-leaf"><span class="label"> Spring Framework </span></span></li>
+								<li><span class="fas fa-power-off"><span class="label"> Spring Boot</span></span></li>
+								<li><span class="fab fa-python"><span class="label"> Python</span></span></li>
+								<li><span class="fas fa-h2"><span class="label"> H2 DataBase</span></span></li>
+								<li><span class="fas fa-database"><span class="label"> MySql</span></span></li>
+								<li><span class="fas fa-database"><span class="label"> MariaDB</span></span></li>
 							</ul>
 						</div>
 					</section>
@@ -158,7 +166,7 @@
 				<!-- Footer -->
 					<footer id="footer">
 						<ul class="icons">
-							<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li th:onclick="kakaoSignOut()"><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
 							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
 							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
 							<li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
@@ -177,7 +185,7 @@
 				function kakaoLogout() {
 					if (Kakao.Auth.getAccessToken()) {
 						Kakao.API.request({
-							url: '/v1/user/unlink',
+							url: '/v1/user/logout',
 							success: function (response) {
 								$.ajax({
 									url: "/logout",
@@ -201,6 +209,36 @@
 						})
 						Kakao.Auth.setAccessToken(undefined)
 					}
+				}
+
+				function kakaoSignOut(){
+					if (Kakao.Auth.getAccessToken()) {
+						Kakao.API.request({
+							url: '/v1/user/unlink',
+							success: function (response) {
+									$.ajax({
+										url: "/logout",
+										type: "POST",
+										complete: function (data) {
+											if (data.responseText == 'error') {
+												alert("로그아웃에 실패했습니다.");
+											} else if (data.responseText == 'success') {
+												alert("로그아웃 했습니다..");
+												window.location.href ="index";
+											} else {
+												alert("로그아웃에 실패했습니다.");
+												window.location.href ="index";
+											}
+										}
+									});
+								},
+							fail: function (response) {
+								alert("에러가 발생했습니다.")
+							}
+						})
+						}
+
+
 				}
 			</script>
 			<script src="assets/js/jquery.min.js"></script>

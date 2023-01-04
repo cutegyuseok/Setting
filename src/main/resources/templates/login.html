@@ -78,19 +78,22 @@
 				Kakao.Auth.createLoginButton({
 					container: '#kakao-login-btn',
 					success: function (response) {
-						Kakao.API.request({
-							url: '/v2/user/me',
-							success: function (response) {
-								login(response)
-							},
-							fail: function (error) {
-								alert("로그인 시도중 에러가 발생했습니다. 개발자에게 문의 주시기 바랍니다.")
-							},
-						})
-					},
-					fail: function (error) {
-						alert("로그인 시도중 에러가 발생했습니다. 개발자에게 문의 주시기 바랍니다.")
-					},
+							Kakao.API.request({
+								url: '/v2/user/me',
+								success: function (response) {
+									login(response)
+								},
+								fail: function (error) {
+									alert("로그인 시도중 에러가 발생했습니다. 개발자에게 문의 주시기 바랍니다.")
+								},
+							})
+						}
+					,
+						fail: function (error) {
+							alert("로그인 시도중 에러가 발생했습니다. 개발자에게 문의 주시기 바랍니다.")
+						}
+					,
+
 				});
 
 				function login(authObj) {
